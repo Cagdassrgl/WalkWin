@@ -4,8 +4,8 @@ import 'package:walk_win/core/components/buttons/custom_button.dart';
 import 'package:walk_win/core/components/customTextField/custom_text_form_field.dart';
 import 'package:walk_win/core/constants/app_consts.dart';
 import 'package:walk_win/core/services/firebase_authentication.dart';
+import 'package:walk_win/pages/dashboard/dashboard_view.dart';
 import 'package:walk_win/pages/login/login_view_model.dart';
-import 'package:walk_win/pages/map/map_view.dart';
 import 'package:walk_win/pages/register/register_view.dart';
 
 final loginGlobalKey = GlobalKey<FormState>();
@@ -30,9 +30,9 @@ class Login extends StatelessWidget {
                 "assets/images/login_top.png",
                 width: double.infinity,
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 30),
-                child: Text(
+              Padding(
+                padding: EdgeInsets.only(left: size.width * 0.1),
+                child: const Text(
                   "Login Details",
                   style: TextStyle(
                     fontSize: 20,
@@ -51,7 +51,8 @@ class Login extends StatelessWidget {
                 },
                 icon: const Icon(Icons.mail),
                 iconInfoisValid: true,
-                padding: const EdgeInsets.fromLTRB(40, 50, 40, 20),
+                padding: EdgeInsets.fromLTRB(size.width * 0.10,
+                    size.height * 0.02, size.width * 0.10, size.height * 0.01),
               ),
               RadiusTextFormField(
                 validator: (value) {
@@ -65,10 +66,12 @@ class Login extends StatelessWidget {
                 obsecureText: true,
                 icon: const Icon(Icons.password),
                 iconInfoisValid: true,
-                padding: const EdgeInsets.fromLTRB(40, 20, 40, 10),
+                padding: EdgeInsets.fromLTRB(size.width * 0.10,
+                    size.height * 0.02, size.width * 0.10, size.height * 0.01),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 300, bottom: 30),
+                padding: EdgeInsets.only(
+                    left: size.width * 0.6, bottom: size.width * 0.01),
                 child: TextButton(
                   onPressed: () {},
                   child: Text(
@@ -91,7 +94,7 @@ class Login extends StatelessWidget {
                         .signIn(viewModel.email.text, viewModel.password.text)
                         .then((value) {
                       if (value != null) {
-                        Get.offAll(const MapPage());
+                        Get.offAll(const DashBoard());
                       }
                     });
                   },
@@ -99,7 +102,8 @@ class Login extends StatelessWidget {
               ),
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(40, 20, 40, 0),
+                  padding: EdgeInsets.fromLTRB(size.width * 0.20,
+                      size.height * 0.02, size.width * 0.20, 0),
                   child: TextButton(
                     child: Text(
                       "Don't have an account? Register",

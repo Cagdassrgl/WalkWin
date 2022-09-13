@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 class AppColor {
   static Color buttonColor = const Color.fromARGB(255, 0, 43, 91);
   static Color textButtonColor = const Color.fromARGB(255, 37, 109, 133);
+  static Color firstColor = const Color.fromARGB(255, 0, 43, 91);
+  static Color secondColor = const Color.fromARGB(255, 43, 72, 101);
+  static Color thirdColor = const Color.fromARGB(255, 37, 109, 133);
+  static Color fourthColor = const Color.fromARGB(255, 143, 227, 207);
 }
 
 class FirebaseErrorCode {
