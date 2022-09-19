@@ -17,3 +17,7 @@ class FirebaseErrorCode {
   static String manyRequest = "too-many-requests";
   static String emailAlreadyExists = "email-already-in-use";
 }
+
+class GoogleApi {
+  static String key = "AIzaSyCvuDMfRjQk3-2oFNAHNfOtdQhNjdanNgY";
+}

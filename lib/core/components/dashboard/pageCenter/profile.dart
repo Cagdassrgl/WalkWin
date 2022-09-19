@@ -1,11 +1,19 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:walk_win/core/constants/app_consts.dart';
+import 'package:walk_win/pages/login/login_view.dart';
 
 class Profile {
   static Widget button(Size size) {
+    FirebaseAuth auth = FirebaseAuth.instance;
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        GetStorage().remove("user.uid");
+        auth.signOut();
+        Get.offAll(const Login());
+      },
       child: Container(
         width: size.width * 0.25,
         height: size.width * 0.25,
@@ -26,7 +34,7 @@ class Profile {
               ),
             ),
             Text(
-              "Profile",
+              "Logout",
               style: TextStyle(
                 color: Colors.white,
               ),
