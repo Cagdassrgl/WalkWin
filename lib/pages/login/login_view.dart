@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:walk_win/core/components/buttons/custom_button.dart';
 import 'package:walk_win/core/components/customTextField/custom_text_form_field.dart';
 import 'package:walk_win/core/constants/app_consts.dart';
@@ -9,6 +11,8 @@ import 'package:walk_win/pages/login/login_view_model.dart';
 import 'package:walk_win/pages/register/register_view.dart';
 
 final loginGlobalKey = GlobalKey<FormState>();
+final box = GetStorage();
+final FirebaseAuth auth = FirebaseAuth.instance;
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -94,6 +98,7 @@ class Login extends StatelessWidget {
                         .signIn(viewModel.email.text, viewModel.password.text)
                         .then((value) {
                       if (value != null) {
+                        box.write('user.uid', value.uid);
                         Get.offAll(const DashBoard());
                       }
                     });
