@@ -4,23 +4,29 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:walk_win/core/services/location_permission.dart';
+// ignore: depend_on_referenced_packages
+import 'package:intl/intl.dart' as format;
 
 class MapViewModel extends GetxController {
   var latitude = 39.9334.obs;
   var longitude = 32.8507.obs;
   var distance = 0.0.obs;
-  int timerCounter = 0;
+  var seconds = 0.obs;
 
-  LatLng? startPoint;
-  Timer? timer;
-  Rx<Duration> duration = const Duration().obs;
+  String? activityDistance;
+
+  LatLng? firstPoint;
+  LatLng? secondPoint;
+
+  StopWatchTimer timer = StopWatchTimer();
 
   bool polylineCoordinatesStatus = true;
   bool polylineStatus = false;
   bool startPointStatus = false;
-  bool timerStatus = false;
   bool timerStopStatus = false;
+  bool timerStartStatus = false;
 
   RxList<LatLng> polylineCoordinates = <LatLng>[].obs;
   RxSet<Marker> markers = <Marker>{}.obs;
@@ -33,21 +39,12 @@ class MapViewModel extends GetxController {
   void onInit() async {
     super.onInit();
     getCurrentLocation();
+  }
 
-    // if (timerStatus) {
-    //   timer = Timer.periodic(
-    //     const Duration(seconds: 1),
-    //     (timer) {
-    //       const addSeconds = 1;
-    //       final seconds = duration.value.inSeconds + addSeconds;
-    //       duration.value = Duration(seconds: seconds);
-
-    //       if (timerStopStatus) {
-    //         timer.cancel();
-    //       }
-    //     },
-    //   );
-    // }
+  @override
+  void dispose() async {
+    super.dispose();
+    timer.dispose();
   }
 
   // Users get first location
@@ -59,12 +56,17 @@ class MapViewModel extends GetxController {
         permission != LocationPermission.deniedForever) {
       position = await Geolocator.getCurrentPosition();
 
+      firstPoint = LatLng(position.latitude, position.longitude);
+
       return position;
     } else {
       permission = await PermissionService.requestPermission();
       if (permission != LocationPermission.denied ||
           permission != LocationPermission.deniedForever) {
         position = await Geolocator.getCurrentPosition();
+
+        firstPoint = LatLng(position.latitude, position.longitude);
+
         return position;
       }
     }
@@ -89,17 +91,6 @@ class MapViewModel extends GetxController {
           );
         }
 
-        // User current location marker
-        markers.add(
-          Marker(
-            markerId: const MarkerId("current"),
-            position: LatLng(latitude.value, longitude.value),
-            infoWindow: const InfoWindow(title: "Current"),
-            icon: BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueAzure),
-          ),
-        );
-
         googleMapController.animateCamera(
           CameraUpdate.newCameraPosition(
             CameraPosition(
@@ -111,15 +102,27 @@ class MapViewModel extends GetxController {
             ),
           ),
         );
+
+        //distance calculate
+        if (timerStartStatus) {
+          secondPoint = LatLng(latitude.value, longitude.value);
+
+          distance.value = distance.value +
+              Geolocator.distanceBetween(
+                firstPoint!.latitude,
+                firstPoint!.longitude,
+                secondPoint!.latitude,
+                secondPoint!.longitude,
+              );
+
+          var f = format.NumberFormat("#####.##", "en_US");
+
+          activityDistance = f.format(distance.value);
+
+          firstPoint = secondPoint;
+        }
       },
     );
-  }
-
-  void addTime(Timer t) {
-    const addSeconds = 1;
-
-    final seconds = duration.value.inSeconds + addSeconds;
-    duration.value = Duration(seconds: seconds);
   }
 
   Set<Polyline> getPolyline() {
@@ -140,10 +143,10 @@ class MapViewModel extends GetxController {
   }
 
 // SpeedDial child Start Button
-  void speedStartButton() {
+  void speedStartButton() async {
+    timerStartStatus = true;
     polylineStatus = true;
     startPointStatus = true;
-    timerStatus = true;
     timerStopStatus = false;
 
     markers.add(
@@ -154,12 +157,19 @@ class MapViewModel extends GetxController {
         infoWindow: const InfoWindow(title: "Origin"),
       ),
     );
+
+    //calculate time
+    if (timerStartStatus) {
+      timer.onStartTimer();
+    } else if (timerStopStatus) {
+      timer.onStopTimer();
+    }
   }
 
 // SpeedDial child Stop Button
-  void speedStopButton() {
+  void speedStopButton() async {
+    timerStartStatus = false;
     polylineCoordinatesStatus = false;
-    timerStatus = false;
     timerStopStatus = true;
 
     markers.add(

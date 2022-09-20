@@ -28,8 +28,8 @@ class MapPage extends GetView<MapViewModel> {
                     () => GoogleMap(
                       initialCameraPosition: CameraPosition(
                           target: LatLng(
-                            snapshot.data!.latitude,
-                            snapshot.data!.longitude,
+                            viewModel.latitude.value,
+                            viewModel.longitude.value,
                           ),
                           zoom: 16),
                       // ignore: invalid_use_of_protected_member
@@ -38,6 +38,7 @@ class MapPage extends GetView<MapViewModel> {
                         viewModel.controller.complete(mapController);
                       },
                       polylines: viewModel.getPolyline(),
+                      myLocationEnabled: true,
                     ),
                   );
                 } else {
@@ -110,7 +111,7 @@ class MapPage extends GetView<MapViewModel> {
                           ),
                           child: Center(
                             child: Text(
-                              "${viewModel.distance.value} m",
+                              "${viewModel.activityDistance ?? viewModel.distance.value} m",
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 22,
@@ -160,7 +161,7 @@ class MapPage extends GetView<MapViewModel> {
                           ),
                           child: Center(
                             child: Text(
-                              "${viewModel.duration.value.inSeconds} sn",
+                              "${viewModel.timer.secondTime.value} sn",
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 22,
