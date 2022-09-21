@@ -53,8 +53,8 @@ class FirebaseAuthService {
     return await _auth.signOut();
   }
 
-  Future<User?> createUser(
-      String name, String surname, String email, String password) async {
+  Future<User?> createUser(String name, String username, String email,
+      String password, double totalDistance) async {
     try {
       EasyLoading.show(
         status: "Loading...",
@@ -65,22 +65,29 @@ class FirebaseAuthService {
       var user = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      await _firestore.collection("Users").doc(user.user?.uid).set({
-        'name': name,
-        'surname': surname,
-        'email': email,
-        'password': password
-      });
+      await _firestore.collection("Users").doc(user.user?.uid).set(
+        {
+          'userID': user.user?.uid,
+          'name': name,
+          'username': username,
+          'email': email,
+          'password': password,
+          'totalDistance': totalDistance,
+        },
+      );
 
       return user.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == FirebaseErrorCode.emailAlreadyExists) {
         Fluttertoast.showToast(msg: "This email already use.");
+        return null;
       } else if (e.code == FirebaseErrorCode.network) {
         Fluttertoast.showToast(msg: "Please check your internet connection.");
+        return null;
       }
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
+      return null;
     } finally {
       EasyLoading.dismiss();
     }

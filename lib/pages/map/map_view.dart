@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -12,7 +11,7 @@ class MapPage extends GetView<MapViewModel> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    MapViewModel viewModel = Get.put(MapViewModel());
+    MapViewModel mapViewModel = Get.put(MapViewModel());
 
     return Scaffold(
       body: Column(
@@ -21,23 +20,23 @@ class MapPage extends GetView<MapViewModel> {
             height: size.height * 0.7,
             width: double.infinity,
             child: FutureBuilder(
-              future: viewModel.getFirstLocation(),
+              future: mapViewModel.getFirstLocation(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Obx(
                     () => GoogleMap(
                       initialCameraPosition: CameraPosition(
                           target: LatLng(
-                            viewModel.latitude.value,
-                            viewModel.longitude.value,
+                            mapViewModel.latitude.value,
+                            mapViewModel.longitude.value,
                           ),
                           zoom: 16),
                       // ignore: invalid_use_of_protected_member
-                      markers: viewModel.markers.value,
+                      markers: mapViewModel.markers.value,
                       onMapCreated: (mapController) {
-                        viewModel.controller.complete(mapController);
+                        mapViewModel.controller.complete(mapController);
                       },
-                      polylines: viewModel.getPolyline(),
+                      polylines: mapViewModel.getPolyline(),
                       myLocationEnabled: true,
                     ),
                   );
@@ -67,7 +66,7 @@ class MapPage extends GetView<MapViewModel> {
             () => Container(
               alignment: Alignment.topLeft,
               width: double.infinity,
-              height: size.height * 0.3,
+              height: size.height * 0.2,
               color: AppColor.firstColor,
               child: Column(
                 children: [
@@ -76,7 +75,7 @@ class MapPage extends GetView<MapViewModel> {
                     children: [
                       Padding(
                         padding:
-                            const EdgeInsets.only(left: 16, top: 16, bottom: 8),
+                            const EdgeInsets.only(left: 8, top: 16, bottom: 8),
                         child: Container(
                           width: size.width * 0.45,
                           height: size.height * 0.06,
@@ -100,8 +99,8 @@ class MapPage extends GetView<MapViewModel> {
                       //Distance
 
                       Padding(
-                        padding:
-                            const EdgeInsets.only(left: 16, top: 16, bottom: 8),
+                        padding: const EdgeInsets.only(
+                            left: 16, top: 16, bottom: 8, right: 8),
                         child: Container(
                           width: size.width * 0.45,
                           height: size.height * 0.06,
@@ -111,10 +110,12 @@ class MapPage extends GetView<MapViewModel> {
                           ),
                           child: Center(
                             child: Text(
-                              "${viewModel.activityDistance ?? viewModel.distance.value} m",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
+                              "${mapViewModel.activityDistance ?? mapViewModel.distance.value} m",
+                              style: GoogleFonts.arsenal(
+                                textStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                ),
                               ),
                             ),
                           ),
@@ -127,7 +128,7 @@ class MapPage extends GetView<MapViewModel> {
                       //time
                       Padding(
                         padding:
-                            const EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                            const EdgeInsets.only(left: 8, top: 16, bottom: 8),
                         child: Container(
                           width: size.width * 0.45,
                           height: size.height * 0.06,
@@ -150,8 +151,8 @@ class MapPage extends GetView<MapViewModel> {
                       ),
                       //time
                       Padding(
-                        padding:
-                            const EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                        padding: const EdgeInsets.only(
+                            left: 16, top: 16, bottom: 8, right: 8),
                         child: Container(
                           width: size.width * 0.45,
                           height: size.height * 0.06,
@@ -161,57 +162,73 @@ class MapPage extends GetView<MapViewModel> {
                           ),
                           child: Center(
                             child: Text(
-                              "${viewModel.timer.secondTime.value} sn",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 22,
+                              "${mapViewModel.timer.secondTime.value} sn",
+                              style: GoogleFonts.arsenal(
+                                textStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
                     ],
-                  )
-                  //calori
-                  // Padding(
-                  //   padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
-                  //   child: Container(
-                  //     width: size.width * 0.45,
-                  //     height: size.height * 0.06,
-                  //     decoration: BoxDecoration(
-                  //       color: AppColor.thirdColor,
-                  //       borderRadius: BorderRadius.circular(20),
-                  //     ),
-                  //   ),
-                  // )
+                  ),
                 ],
               ),
             ),
+          ),
+          Container(
+            width: double.infinity,
+            height: size.height * 0.1,
+            color: AppColor.firstColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll<Color>(AppColor.thirdColor),
+                  ),
+                  onPressed: () {
+                    mapViewModel.isDialOpen.value = false;
+                    mapViewModel.activityStartButton();
+                  },
+                  child: Text(
+                    "Start",
+                    style: GoogleFonts.arsenal(
+                      textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: size.width * 0.1,
+                ),
+                TextButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll<Color>(AppColor.thirdColor),
+                  ),
+                  onPressed: () {
+                    mapViewModel.speedStopButton();
+                  },
+                  child: Text(
+                    "Finish",
+                    style: GoogleFonts.arsenal(
+                      textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           )
-        ],
-      ),
-      floatingActionButton: SpeedDial(
-        backgroundColor: AppColor.thirdColor,
-        icon: Icons.hiking_rounded,
-        activeBackgroundColor: AppColor.fourthColor,
-        buttonSize: const Size(64, 64),
-        children: [
-          SpeedDialChild(
-            child: IconButton(
-              onPressed: () {
-                viewModel.speedStartButton();
-              },
-              icon: const Icon(Icons.location_on),
-            ),
-          ),
-          SpeedDialChild(
-            child: IconButton(
-              onPressed: () {
-                viewModel.speedStopButton();
-              },
-              icon: const Icon(Icons.location_off),
-            ),
-          ),
         ],
       ),
     );

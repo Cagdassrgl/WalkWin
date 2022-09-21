@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "8460162156",
-    "project_id": "walkwin-6e30f",
-    "storage_bucket": "walkwin-6e30f.appspot.com"
+    "project_number": "267493575805",
+    "project_id": "walkwin-405dd",
+    "storage_bucket": "walkwin-405dd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:8460162156:android:269b4a4aed11cac72d3449",
+        "mobilesdk_app_id": "1:267493575805:android:787e6e8030fa2a036a3514",
         "android_client_info": {
           "package_name": "com.example.walk_win"
         }
       },
       "oauth_client": [
         {
-          "client_id": "8460162156-322v74eel885ok8oqurfp19us1cjv7q3.apps.googleusercontent.com",
+          "client_id": "267493575805-ilu07clds81efii7omds2th22mksfrdo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBj5XbmYkrHyvdgD42OwXyIRxjUy1zriWA"
+          "current_key": "AIzaSyDa-IMqkjk3AEqX5pVU_d4M7zX8NYJGns8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "8460162156-322v74eel885ok8oqurfp19us1cjv7q3.apps.googleusercontent.com",
+              "client_id": "267493575805-ilu07clds81efii7omds2th22mksfrdo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

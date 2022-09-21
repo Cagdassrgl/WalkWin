@@ -38,7 +38,7 @@ class RadiusTextFormField extends StatelessWidget {
         color: Colors.white,
         borderRadius: const BorderRadius.all(
           Radius.circular(
-            0,
+            20,
           ),
         ),
       ),
@@ -59,7 +59,7 @@ class RadiusTextFormField extends StatelessWidget {
             enabledBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(
-                  10,
+                  20,
                 ),
               ),
             ),
