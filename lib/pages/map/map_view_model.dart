@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:walk_win/core/components/customTextField/custom_text_form_field.dart';
 import 'package:walk_win/core/services/location_permission.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart' as format;
@@ -13,7 +17,7 @@ class MapViewModel extends GetxController {
   var latitude = 39.9334.obs;
   var longitude = 32.8507.obs;
   var distance = 0.0.obs;
-  var seconds = 0.obs;
+  double totalDistance = 0;
 
   String? activityDistance;
 
@@ -27,13 +31,19 @@ class MapViewModel extends GetxController {
   bool startPointStatus = false;
   bool timerStopStatus = false;
   bool timerStartStatus = false;
+  ValueNotifier<bool> isDialOpen = ValueNotifier(false);
 
   RxList<LatLng> polylineCoordinates = <LatLng>[].obs;
+  List<GeoPoint> geoPointList = [];
   RxSet<Marker> markers = <Marker>{}.obs;
 
   final Completer<GoogleMapController> controller = Completer();
+  TextEditingController activityNameController = TextEditingController();
 
   late StreamSubscription<Position> streamSubscription;
+
+  final _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
 
   @override
   void onInit() async {
@@ -89,6 +99,7 @@ class MapViewModel extends GetxController {
           polylineCoordinates.add(
             LatLng(latitude.value, longitude.value),
           );
+          geoPointList.add(GeoPoint(latitude.value, longitude.value));
         }
 
         googleMapController.animateCamera(
@@ -142,8 +153,44 @@ class MapViewModel extends GetxController {
     }
   }
 
+  void activityStartButton() {
+    Get.dialog(
+      SingleChildScrollView(
+        child: AlertDialog(
+          title: const Text("Activity Name"),
+          content: RadiusTextFormField(
+            textEditingController: activityNameController,
+            hintText: "Enter activity name",
+            icon: const Icon(Icons.directions_walk),
+            iconInfoisValid: true,
+            padding: const EdgeInsets.all(16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back(closeOverlays: true);
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                if (activityNameController.text.isNotEmpty) {
+                  Get.back();
+                  speedStartButton();
+                } else {
+                  Fluttertoast.showToast(msg: "Please enter an activity name");
+                }
+              },
+              child: const Text("Start Activity"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 // SpeedDial child Start Button
-  void speedStartButton() async {
+  void speedStartButton() {
     timerStartStatus = true;
     polylineStatus = true;
     startPointStatus = true;
@@ -167,7 +214,7 @@ class MapViewModel extends GetxController {
   }
 
 // SpeedDial child Stop Button
-  void speedStopButton() async {
+  void speedStopButton() {
     timerStartStatus = false;
     polylineCoordinatesStatus = false;
     timerStopStatus = true;
@@ -180,5 +227,19 @@ class MapViewModel extends GetxController {
         infoWindow: const InfoWindow(title: "Destination"),
       ),
     );
+
+    postActivity(activityNameController.text, distance.value,
+        timer.secondTime.value, geoPointList);
+  }
+
+  void postActivity(String activityName, double distance, int duration,
+      List<GeoPoint> listGeoPoint) {
+    _firestore.collection("Activity").doc().set({
+      'userID': _auth.currentUser!.uid,
+      'activityName': activityName,
+      'activityDistance': distance,
+      'activityDuration': duration,
+      'polylineCoordinates': listGeoPoint,
+    });
   }
 }
