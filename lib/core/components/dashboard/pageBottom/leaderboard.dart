@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:walk_win/core/constants/app_consts.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart' as format;
@@ -48,10 +49,13 @@ class Leaderboard {
                   itemBuilder: (context, index) {
                     var f = format.NumberFormat("#####.##", "en_US");
                     return ListTile(
-                      leading: const Icon(
-                        Icons.person,
-                        size: 50,
-                        color: Colors.white,
+                      leading: Text(
+                        (index + 1).toString(),
+                        style: GoogleFonts.arsenal(
+                          fontSize: 26,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       trailing: Text(
                         f.format(

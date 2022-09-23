@@ -31,7 +31,7 @@ class HistoryPage extends StatelessWidget {
           onPressed: () {
             Get.to(const DashBoard());
           },
-          icon: const Icon(Icons.home),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
       body: Padding(
@@ -77,7 +77,7 @@ class HistoryPage extends StatelessWidget {
                                   Padding(
                                     padding: EdgeInsets.only(
                                         left: size.width * 0.05,
-                                        top: size.height * 0.008),
+                                        top: size.height * 0.02),
                                     child: Text(
                                       activity.activityName.toString(),
                                       style: GoogleFonts.arsenal(
@@ -91,7 +91,7 @@ class HistoryPage extends StatelessWidget {
                                       Padding(
                                         padding: EdgeInsets.only(
                                             left: size.width * 0.05,
-                                            top: size.height * 0.008),
+                                            top: size.height * 0.03),
                                         child: Text(
                                           "${historyViewModel.f.format(activity.activityDistance)} meters",
                                           style: GoogleFonts.arsenal(
@@ -103,7 +103,7 @@ class HistoryPage extends StatelessWidget {
                                       Padding(
                                         padding: EdgeInsets.only(
                                             left: size.width * 0.05,
-                                            top: size.height * 0.02),
+                                            top: size.height * 0.03),
                                         child: Text(
                                           "${activity.activityDuration} seconds",
                                           style: GoogleFonts.arsenal(

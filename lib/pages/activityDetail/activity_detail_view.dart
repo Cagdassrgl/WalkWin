@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:walk_win/core/constants/app_consts.dart';
+import 'package:walk_win/pages/history/history_view.dart';
 
 class ActivityDetail extends StatelessWidget {
   final List<dynamic> polylineCoordinates;
@@ -40,6 +44,23 @@ class ActivityDetail extends StatelessWidget {
     };
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Activity Details",
+          style: GoogleFonts.arsenal(
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        backgroundColor: AppColor.firstColor,
+        leading: IconButton(
+          mouseCursor: MouseCursor.uncontrolled,
+          onPressed: () {
+            Get.to(const HistoryPage());
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
+      ),
       body: GoogleMap(
         initialCameraPosition: CameraPosition(
             target: LatLng(

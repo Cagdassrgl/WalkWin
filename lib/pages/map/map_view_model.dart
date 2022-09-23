@@ -226,25 +226,28 @@ class MapViewModel extends GetxController {
 
 // SpeedDial child Stop Button
   void speedStopButton() {
-    timerStartStatus = false;
-    polylineCoordinatesStatus = false;
-    timerStopStatus = true;
+    if (timerStartStatus) {
+      timerStartStatus = false;
+      polylineCoordinatesStatus = false;
+      timerStopStatus = true;
 
-    markers.add(
-      Marker(
-        markerId: const MarkerId("destination"),
-        position: LatLng(latitude.value, longitude.value),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-        infoWindow: const InfoWindow(title: "Destination"),
-      ),
-    );
+      markers.add(
+        Marker(
+          markerId: const MarkerId("destination"),
+          position: LatLng(latitude.value, longitude.value),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          infoWindow: const InfoWindow(title: "Destination"),
+        ),
+      );
 
-    postActivity(activityNameController.text, distance.value,
-        timer.secondTime.value, geoPointList);
+      postActivity(activityNameController.text, distance.value,
+          timer.secondTime.value, geoPointList);
 
-    addDistance();
-
-    Get.offAll(const HistoryPage());
+      Get.offAll(const HistoryPage());
+    } else {
+      Fluttertoast.showToast(
+          msg: "Please press start activity before ending the activity.");
+    }
   }
 
   void addDistance() async {

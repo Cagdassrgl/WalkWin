@@ -6,9 +6,9 @@ class DashboardViewModel extends GetxController {
   final _firestore = FirebaseFirestore.instance;
 
   @override
+  // ignore: unnecessary_overrides
   void onInit() {
     super.onInit();
-    getUserInformation();
   }
 
   @override
@@ -21,7 +21,10 @@ class DashboardViewModel extends GetxController {
   void onClose() {}
 
   Future<QuerySnapshot<Map<String, dynamic>>> getUserInformation() async {
-    var userDocument = await _firestore.collection("Users").get();
+    var userDocument = await _firestore
+        .collection("Users")
+        .orderBy("totalDistance", descending: true)
+        .get();
 
     return userDocument;
   }

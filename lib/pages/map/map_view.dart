@@ -55,6 +55,9 @@ class MapPage extends GetView<MapViewModel> {
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height,
                         color: Colors.black26,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       )
                     ],
                   );
