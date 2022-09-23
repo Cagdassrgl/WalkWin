@@ -26,6 +26,8 @@ class Login extends StatelessWidget {
 
     return Scaffold(
       body: Container(
+        height: size.height,
+        width: double.infinity,
         color: Colors.white,
         child: Wrap(
           children: [
@@ -113,7 +115,7 @@ class Login extends StatelessWidget {
                     style: GoogleFonts.arsenal(
                       textStyle: TextStyle(
                         color: AppColor.buttonColor,
-                        fontSize: 18,
+                        fontSize: 16,
                       ),
                     ),
                   ),

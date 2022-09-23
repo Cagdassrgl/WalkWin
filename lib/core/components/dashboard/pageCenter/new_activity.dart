@@ -10,7 +10,7 @@ class NewActivity {
     return //New Activity
         GestureDetector(
       onTap: () {
-        Get.off(
+        Get.to(
           const MapPage(),
         );
       },

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:walk_win/core/constants/app_consts.dart';
+import 'package:walk_win/pages/history/history_view.dart';
 
 class History {
   static Widget button(Size size) {
     return //History
         GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Get.to(const HistoryPage());
+      },
       child: Container(
         width: size.width * 0.25,
         height: size.width * 0.25,

@@ -32,9 +32,9 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.6.5
-  firebase_auth: ^3.8.0
-  firebase_core: ^1.22.0
-  cloud_firestore: ^3.4.7
+  firebase_auth: ^3.6.0
+  firebase_core: ^1.20.0
+  cloud_firestore: ^3.4.2
   fluttertoast: ^8.0.9
   flutter_easyloading: ^3.0.5
   google_maps_flutter: ^2.2.0

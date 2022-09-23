@@ -12,12 +12,13 @@ import 'package:walk_win/core/components/customTextField/custom_text_form_field.
 import 'package:walk_win/core/services/location_permission.dart';
 // ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart' as format;
+import 'package:walk_win/pages/history/history_view.dart';
 
 class MapViewModel extends GetxController {
   var latitude = 39.9334.obs;
   var longitude = 32.8507.obs;
   var distance = 0.0.obs;
-  double totalDistance = 0;
+  double totalDistance = 0.0;
 
   String? activityDistance;
 
@@ -40,7 +41,7 @@ class MapViewModel extends GetxController {
   final Completer<GoogleMapController> controller = Completer();
   TextEditingController activityNameController = TextEditingController();
 
-  late StreamSubscription<Position> streamSubscription;
+  late StreamSubscription<LocationData> streamSubscription;
 
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
@@ -55,6 +56,12 @@ class MapViewModel extends GetxController {
   void dispose() async {
     super.dispose();
     timer.dispose();
+  }
+
+  @override
+  void onClose() {
+    streamSubscription.cancel();
+    addDistance();
   }
 
   // Users get first location
@@ -87,9 +94,13 @@ class MapViewModel extends GetxController {
   void getCurrentLocation() async {
     Location location = Location();
 
+    location.changeSettings(
+      interval: 2000,
+    );
+
     GoogleMapController googleMapController = await controller.future;
 
-    location.onLocationChanged.listen(
+    streamSubscription = location.onLocationChanged.listen(
       (newLoc) {
         latitude.value = newLoc.latitude!;
         longitude.value = newLoc.longitude!;
@@ -230,11 +241,38 @@ class MapViewModel extends GetxController {
 
     postActivity(activityNameController.text, distance.value,
         timer.secondTime.value, geoPointList);
+
+    addDistance();
+
+    Get.offAll(const HistoryPage());
+  }
+
+  void addDistance() async {
+    var activities = await _firestore
+        .collection("Activity")
+        .where("userID", isEqualTo: _auth.currentUser!.uid)
+        .get();
+
+    var user = await _firestore
+        .collection("Users")
+        .where("userID", isEqualTo: _auth.currentUser!.uid)
+        .get();
+
+    // ignore: avoid_function_literals_in_foreach_calls
+    activities.docs.forEach((element) {
+      totalDistance += element.data()['activityDistance'];
+    });
+
+    for (var element in user.docs) {
+      element.reference.update({
+        'totalDistance': totalDistance,
+      });
+    }
   }
 
   void postActivity(String activityName, double distance, int duration,
-      List<GeoPoint> listGeoPoint) {
-    _firestore.collection("Activity").doc().set({
+      List<GeoPoint> listGeoPoint) async {
+    await _firestore.collection("Activity").doc().set({
       'userID': _auth.currentUser!.uid,
       'activityName': activityName,
       'activityDistance': distance,
