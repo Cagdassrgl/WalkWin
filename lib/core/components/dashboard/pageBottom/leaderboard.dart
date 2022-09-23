@@ -1,8 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:walk_win/core/constants/app_consts.dart';
+// ignore: depend_on_referenced_packages
+import 'package:intl/intl.dart' as format;
+import 'package:walk_win/pages/dashboard/dashboard_view_model.dart';
 
 class Leaderboard {
   static Widget leaderBoard(Size size) {
+    final dashboardViewModel = Get.put(DashboardViewModel());
+
     return Container(
       alignment: Alignment.topLeft,
       width: double.infinity,
@@ -30,37 +37,48 @@ class Leaderboard {
               ),
             ),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return const ListTile(
-                  leading: Icon(
-                    Icons.person,
-                    size: 50,
-                    color: Colors.white,
-                  ),
-                  trailing: Text(
-                    "10 km",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                  title: Text(
-                    "Çağdaş Sarıgil",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
+          FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            future: dashboardViewModel.getUserInformation(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    var f = format.NumberFormat("#####.##", "en_US");
+                    return ListTile(
+                      leading: const Icon(
+                        Icons.person,
+                        size: 50,
+                        color: Colors.white,
+                      ),
+                      trailing: Text(
+                        f.format(
+                          snapshot.data!.docs[index].data()["totalDistance"],
+                        ),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                      title: Text(
+                        snapshot.data!.docs[index].data()["username"],
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                    );
+                  },
                 );
-              },
-            ),
-          )
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
         ],
       ),
     );

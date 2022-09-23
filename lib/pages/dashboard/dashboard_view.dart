@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:walk_win/core/components/dashboard/pageCenter/history.dart';
 import 'package:walk_win/core/components/dashboard/pageCenter/new_activity.dart';
 import 'package:walk_win/core/components/dashboard/pageCenter/profile.dart';
 import 'package:walk_win/core/components/dashboard/pageBottom/leaderboard.dart';
 import 'package:walk_win/core/components/dashboard/pageTop/user_info.dart';
+import 'package:walk_win/pages/dashboard/dashboard_view_model.dart';
 
 class DashBoard extends StatelessWidget {
   const DashBoard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
+    final dashboardViewModel = Get.put(DashboardViewModel());
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
