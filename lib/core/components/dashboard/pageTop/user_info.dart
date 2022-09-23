@@ -29,8 +29,20 @@ class UserInfo {
                   fit: BoxFit.fill,
                 ),
                 Positioned(
-                  top: size.height * 0.04,
-                  left: size.width * 0.1,
+                  top: size.height * 0.02,
+                  left: size.width * 0.06,
+                  child: Text(
+                    "Welcome back, ${snapshot.data!.docs.first.data()['username']}",
+                    style: GoogleFonts.arsenal(
+                      fontSize: 14,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: size.height * 0.08,
+                  left: size.width * 0.15,
                   child: Text(
                     "Total Distance",
                     style: GoogleFonts.arsenal(
@@ -41,8 +53,8 @@ class UserInfo {
                   ),
                 ),
                 Positioned(
-                  top: size.height * 0.08,
-                  left: size.width * 0.1,
+                  top: size.height * 0.11,
+                  left: size.width * 0.15,
                   child: Text(
                     "${f.format(snapshot.data!.docs.first.data()['totalDistance'])} m",
                     style: GoogleFonts.arsenal(
