@@ -28,7 +28,7 @@ class SignOut {
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(
-                Icons.person,
+                Icons.logout,
                 color: Colors.white,
                 size: 50,
               ),
