@@ -50,7 +50,7 @@ class Login extends StatelessWidget {
             ),
             RadiusTextFormField(
               textEditingController: loginViewModel.email,
-              hintText: "Email*",
+              hintText: "email*",
               icon: const Icon(Icons.mail),
               iconInfoisValid: true,
               padding: EdgeInsets.fromLTRB(size.width * 0.10,
@@ -58,7 +58,7 @@ class Login extends StatelessWidget {
             ),
             RadiusTextFormField(
               textEditingController: loginViewModel.password,
-              hintText: "Password*",
+              hintText: "password*",
               obsecureText: true,
               icon: const Icon(Icons.password),
               iconInfoisValid: true,
