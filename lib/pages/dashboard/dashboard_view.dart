@@ -38,7 +38,7 @@ class DashBoard extends StatelessWidget {
                       width: 8,
                     ),
                     //Profile
-                    Profile.button(size),
+                    SignOut.button(size),
                   ],
                 ),
               ],
