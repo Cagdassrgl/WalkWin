@@ -28,6 +28,7 @@ class SignOut {
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(
+                //logout icon
                 Icons.logout,
                 color: Colors.white,
                 size: 50,

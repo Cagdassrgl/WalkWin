@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:restart_app/restart_app.dart';

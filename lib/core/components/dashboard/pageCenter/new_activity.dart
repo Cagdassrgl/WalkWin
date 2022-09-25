@@ -28,6 +28,7 @@ class NewActivity {
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(
+                //new activity icon
                 Icons.directions_walk,
                 color: Colors.white,
                 size: 50,
