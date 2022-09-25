@@ -53,6 +53,10 @@ class FirebaseAuthService {
     return await _auth.signOut();
   }
 
+  resetPassword(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
+
   Future<User?> createUser(String name, String username, String email,
       String password, double totalDistance) async {
     try {

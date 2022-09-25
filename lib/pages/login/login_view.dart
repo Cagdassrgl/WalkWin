@@ -69,7 +69,9 @@ class Login extends StatelessWidget {
               padding: EdgeInsets.only(
                   left: size.width * 0.6, bottom: size.width * 0.01),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  loginViewModel.resetPassword();
+                },
                 child: Text(
                   "Forgot password?",
                   style: GoogleFonts.arsenal(

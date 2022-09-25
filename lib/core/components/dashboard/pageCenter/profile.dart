@@ -1,17 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:walk_win/core/constants/app_consts.dart';
 import 'package:walk_win/pages/login/login_view.dart';
+import 'package:walk_win/pages/login/login_view_model.dart';
 
-class Profile {
+class SignOut {
   static Widget button(Size size) {
-    FirebaseAuth auth = FirebaseAuth.instance;
+    var controller = Get.put(LoginViewModel());
     return GestureDetector(
       onTap: () {
+        controller.signOut();
         GetStorage().remove("user.uid");
-        auth.signOut();
         Get.offAll(const Login());
       },
       child: Container(
