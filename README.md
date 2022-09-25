@@ -1,4 +1,4 @@
 # Walk Win
 
-Firebase, GetX, Google APIs, MVVM Architecture and more
+Firebase Authentication and Cloud Firestore, GetX State Management, Google APIs, MVVM Architecture and more
 
