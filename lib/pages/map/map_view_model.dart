@@ -32,7 +32,7 @@ class MapViewModel extends GetxController {
   bool startPointStatus = false;
   bool timerStopStatus = false;
   bool timerStartStatus = false;
-  ValueNotifier<bool> isDialOpen = ValueNotifier(false);
+  //ValueNotifier<bool> isDialOpen = ValueNotifier(false);
 
   RxList<LatLng> polylineCoordinates = <LatLng>[].obs;
   List<GeoPoint> geoPointList = [];

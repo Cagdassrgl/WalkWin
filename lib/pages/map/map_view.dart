@@ -14,6 +14,7 @@ class MapPage extends GetView<MapViewModel> {
     MapViewModel mapViewModel = Get.put(MapViewModel());
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           SizedBox(
@@ -195,7 +196,7 @@ class MapPage extends GetView<MapViewModel> {
                         MaterialStatePropertyAll<Color>(AppColor.thirdColor),
                   ),
                   onPressed: () {
-                    mapViewModel.isDialOpen.value = false;
+                    //mapViewModel.isDialOpen.value = false;
                     mapViewModel.activityStartButton();
                   },
                   child: Text(

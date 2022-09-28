@@ -21,3 +21,17 @@ class FirebaseErrorCode {
 class GoogleApi {
   static String key = "AIzaSyCvuDMfRjQk3-2oFNAHNfOtdQhNjdanNgY";
 }
+
+class HintText {
+  static String name = "name*";
+  static String username = "username*";
+  static String email = "email*";
+  static String password = "password*";
+}
+
+class AppText {
+  static String forgotPassword = "Forgot password?";
+  static String signIn = "SIGN IN";
+  static String signUp = "SIGN UP";
+  static String registerClick = "Don't have an account? Register";
+}

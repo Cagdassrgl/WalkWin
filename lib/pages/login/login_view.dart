@@ -50,7 +50,7 @@ class Login extends StatelessWidget {
             ),
             RadiusTextFormField(
               textEditingController: loginViewModel.email,
-              hintText: "email*",
+              hintText: HintText.email,
               icon: const Icon(Icons.mail),
               iconInfoisValid: true,
               padding: EdgeInsets.fromLTRB(size.width * 0.10,
@@ -58,7 +58,7 @@ class Login extends StatelessWidget {
             ),
             RadiusTextFormField(
               textEditingController: loginViewModel.password,
-              hintText: "password*",
+              hintText: HintText.password,
               obsecureText: true,
               icon: const Icon(Icons.password),
               iconInfoisValid: true,
@@ -73,7 +73,7 @@ class Login extends StatelessWidget {
                   loginViewModel.resetPassword();
                 },
                 child: Text(
-                  "Forgot password?",
+                  AppText.forgotPassword,
                   style: GoogleFonts.arsenal(
                     textStyle: TextStyle(
                       color: AppColor.buttonColor,
@@ -86,7 +86,7 @@ class Login extends StatelessWidget {
             Center(
               child: CustomButton.button(
                 size: size,
-                text: "SIGN IN",
+                text: AppText.signIn,
                 onPressed: () {
                   if (loginViewModel.email.text.isEmpty &&
                       loginViewModel.password.text.isEmpty) {
@@ -113,7 +113,7 @@ class Login extends StatelessWidget {
                     size.height * 0.02, size.width * 0.20, 0),
                 child: TextButton(
                   child: Text(
-                    "Don't have an account? Register",
+                    AppText.registerClick,
                     style: GoogleFonts.arsenal(
                       textStyle: TextStyle(
                         color: AppColor.buttonColor,

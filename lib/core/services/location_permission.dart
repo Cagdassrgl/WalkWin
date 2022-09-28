@@ -9,7 +9,7 @@ class PermissionService {
 
     while (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission != LocationPermission.denied) {
+      if (permission == LocationPermission.denied) {
         var openSettings = await Geolocator.openAppSettings();
         if (openSettings && permission == LocationPermission.denied ||
             permission == LocationPermission.deniedForever) {
