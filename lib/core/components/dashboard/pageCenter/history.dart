@@ -24,7 +24,8 @@ class History {
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(
-                Icons.content_paste_go_rounded,
+                //history icon
+                Icons.history,
                 color: Colors.white,
                 size: 50,
               ),

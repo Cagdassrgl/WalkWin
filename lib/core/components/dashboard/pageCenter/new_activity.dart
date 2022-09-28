@@ -28,7 +28,8 @@ class NewActivity {
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(
-                Icons.hiking,
+                //new activity icon
+                Icons.directions_walk,
                 color: Colors.white,
                 size: 50,
               ),
